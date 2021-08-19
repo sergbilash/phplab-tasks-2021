@@ -42,7 +42,7 @@ class Strings implements StringsInterface
      */
     public function getBrandName(string $noun): string
     {
-        $noun = trim(str_replace('the', '', strtolower($noun)));
+        $noun = trim(strtolower($noun));
         if (substr($noun, 0, 1) == substr($noun, -1)) {
             return ucfirst($noun) . substr($noun, 1, strlen($noun));
         } else {
