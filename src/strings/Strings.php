@@ -11,7 +11,6 @@ class Strings implements StringsInterface
      * @param string $input
      * @return string
      */
-
     public function snakeCaseToCamelCase(string $input): string
     {
         return lcfirst((str_replace('_', '', ucwords($input, '_'))));
@@ -21,7 +20,6 @@ class Strings implements StringsInterface
      * @param string $input
      * @return string
      */
-
     public function mirrorMultibyteString(string $input): string
     {
         $result = '';
@@ -42,11 +40,13 @@ class Strings implements StringsInterface
      * @param string $noun
      * @return string
      */
-
     public function getBrandName(string $noun): string
     {
-        $noun = strtolower($noun);
-        $result = trim(str_ireplace('the', '', $noun));
-        return ucfirst($result) . substr($result, 1, strlen($result));
+        $noun = trim(str_replace('the', '', strtolower($noun)));
+        if (substr($noun, 0, 1) == substr($noun, -1)) {
+            return ucfirst($noun) . substr($noun, 1, strlen($noun));
+        } else {
+            return 'The ' . ucfirst($noun);
+        }
     }
 }
