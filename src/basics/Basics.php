@@ -26,6 +26,7 @@ class Basics implements BasicsInterface
         $this->validator->isMinutesException($minute);
 
         $ref = [
+            0 => 'fourth',
             1 => 'first',
             2 => 'second',
             3 => 'third',
