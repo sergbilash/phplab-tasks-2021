@@ -13,4 +13,4 @@ Parser should extract the following data:
 
 ### How to install additional packages
 * `cd` into cloned repository folder
-* Execute in terminal `composer install`
+* Execute in terminal `composer install` OR `composer update`
