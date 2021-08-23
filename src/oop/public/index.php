@@ -38,7 +38,7 @@ use src\oop\app\src\ScrapperFactory;
 $scrapperFactory = new ScrapperFactory();
 
 $filmixMovie = $scrapperFactory->create('filmix')->getMovie('https://filmix.ac/filmi/triller/151413-lost-ledyanoy-drayv-2021.html');
-$baskinoMovie = $scrapperFactory->create('kinoukr')->getMovie('https://kinoukr.com/4166-pravdyva-istoriya-bandy-kelli.html');
+$kinoukrMovie = $scrapperFactory->create('kinoukr')->getMovie('https://kinoukr.com/4166-pravdyva-istoriya-bandy-kelli.html');
 
 ?>
 <div class="container">
@@ -48,9 +48,9 @@ $baskinoMovie = $scrapperFactory->create('kinoukr')->getMovie('https://kinoukr.c
         <p><?= $filmixMovie->getDescription(); ?></p>
     </div>
     <div class="film">
-        <h1><?= $baskinoMovie->getTitle(); ?></h1>
-        <img src="<?= $baskinoMovie->getPoster(); ?>" alt="Poster"/>
-        <p><?= $baskinoMovie->getDescription(); ?></p>
+        <h1><?= $kinoukrMovie->getTitle(); ?></h1>
+        <img src="<?= $kinoukrMovie->getPoster(); ?>" alt="Poster"/>
+        <p><?= $kinoukrMovie->getDescription(); ?></p>
     </div>
 </div>
 
