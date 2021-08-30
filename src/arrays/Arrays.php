@@ -57,20 +57,14 @@ class Arrays implements ArraysInterface
     public function groupByTag(array $input): array
     {
         $arr_result = [];
-
         sort($input);
-        foreach ($input as $array) {
-            foreach ($array as $key => $value) {
-                if ($key == 'tags') {
-                    foreach ($value as $item) {
-                        $arr_result[$item][] = $array['name'];
-                    }
-                }
+        for ($i = 0; $i < count($input); $i++) {
+            foreach (($input[$i]['tags']) as $value) {
+                $arr_result[$value][] = $input[$i]['name'];
+                asort($arr_result);
             }
         }
-
         ksort($arr_result);
-
         return $arr_result;
     }
 }
