@@ -19,6 +19,7 @@
 
 namespace functions;
 
+
 class Functions
 {
     /**
@@ -57,7 +58,9 @@ class Functions
      */
     public function sayHelloArgumentWrapper($arg): string
     {
-        // put your code here
+        if (!is_numeric($arg) || !is_string($arg) || !is_bool($arg)) {
+            throw new \InvalidArgumentException('Please, input correct parametr: should be numeric, string or boolean.');
+        }
 
         return $this->sayHelloArgument($arg);
     }
@@ -91,6 +94,12 @@ class Functions
      */
     public function countArgumentsWrapper(): array
     {
-        // put your code here
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            if (!is_string($arg)) {
+                throw new \InvalidArgumentException('Please, input correct parametr: should be only string.');
+            }
+        }
+        return $this->countArguments($args);
     }
 }
