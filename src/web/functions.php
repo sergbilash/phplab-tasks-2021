@@ -9,9 +9,12 @@
  * @param  array  $airports
  * @return string[]
  */
-function getUniqueFirstLetters(array $airports)
+function getUniqueFirstLetters(array $airports): array
 {
-    // put your logic here
+    $result = [];
+    for ($i=0; $i < count($airports); $i++) {
+        $result[] = $airports[$i]['name'][0];
+    }
 
-    return ['A', 'B', 'C'];
+    return array_unique($result);
 }
