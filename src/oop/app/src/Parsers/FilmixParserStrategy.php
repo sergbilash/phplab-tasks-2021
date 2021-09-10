@@ -24,6 +24,10 @@ class FilmixParserStrategy implements ParserInterface
         preg_match('/<img.*?src=[\'"](https.*)[\'"].*?class="poster.*>/', $siteContent, $poster);
         preg_match('/<div.*class="about".*?><div.*?>(.*?)<\/div>/', $siteContent, $description);
 
-        return $this->movie->setTitle($title[1])->setPoster($poster[1])->setDescription($description[1]);
+        $this->movie->setTitle($title[1]);
+        $this->movie->setPoster($poster[1]);
+        $this->movie->setDescription($description[1]);
+
+        return $this->movie;
     }
 }
