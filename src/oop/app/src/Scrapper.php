@@ -14,8 +14,8 @@ use src\oop\app\src\Models\Movie;
 
 class Scrapper
 {
-    public $transporter;
-    public $parser;
+    public object $transporter;
+    public object $parser;
 
     public function __construct($transporter, $parser)
     {

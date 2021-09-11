@@ -2,8 +2,6 @@
 
 namespace src\oop\app\src;
 
-use GuzzleHttp\Client;
-use src\oop\app\src\Models\Movie;
 use src\oop\app\src\Parsers\KinoukrDomCrawlerParserAdapter;
 use src\oop\app\src\Parsers\FilmixParserStrategy;
 use src\oop\app\src\Transporters\CurlStrategy;
@@ -21,9 +19,9 @@ class ScrapperFactory
     {
         switch ($domain) {
             case 'filmix':
-                return new Scrapper(new CurlStrategy(), new FilmixParserStrategy(new Movie()));
+                return new Scrapper(new CurlStrategy(), new FilmixParserStrategy());
             case 'kinoukr':
-                return new Scrapper(new GuzzleAdapter(new Client()), new KinoukrDomCrawlerParserAdapter(new Movie()));
+                return new Scrapper(new GuzzleAdapter(), new KinoukrDomCrawlerParserAdapter());
             default:
                 throw new Exception('Resource not found!');
         }

@@ -4,13 +4,14 @@ namespace src\oop\app\src\Transporters;
 
 use \GuzzleHttp\Client;
 
+
 class GuzzleAdapter implements TransportInterface
 {
     private Client $client;
 
-    public function __construct(Client $client)
+    public function __construct()
     {
-        $this->client = $client;
+        $this->client = new Client();
     }
 
     /**
