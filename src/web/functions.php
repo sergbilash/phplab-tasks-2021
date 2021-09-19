@@ -16,7 +16,6 @@ function getUniqueFirstLetters(array $airports): array
         $result[] = $airports[$i]['name'][0];
     }
     sort($result);
-
     return array_unique($result);
 }
 
@@ -35,16 +34,28 @@ function buildUrl(array $array): string
  */
 function filterByFirstLetter(array $airports): string
 {
-    //return substr($airports['name'], 0, 1) === $_GET["filter_by_first_letter"];
-    return substr($airports['name'], 0, 1) === 'W';
+    return substr($airports['name'], 0, 1) === $_GET["filter_by_first_letter"];
 }
 
 /**
  * @param array $airports
  * @param string $state
- * @return array
+ * @return string
  */
 function filterByState(array $airports): string
 {
     return $airports['state'] === $_GET["filter_by_state"];
+}
+
+/**
+ * @param array $airports
+ * @param int $itemsPerPage
+ * @param $currentPage
+ * @return array
+ */
+function Pagination(array $airports, int $itemsPerPage, int $currentPage): array
+{
+    $offset = ($currentPage - 1) * $itemsPerPage;
+    if ($offset < 0) $offset = 0;
+    return array_slice($airports, $offset, $itemsPerPage);
 }

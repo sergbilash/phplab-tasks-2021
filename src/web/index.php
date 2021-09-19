@@ -2,16 +2,6 @@
 require_once './functions.php';
 
 $airports = require './airports.php';
-$firstNameLetter = null;
-$state = null;
-$sortOption = null;
-$page = 1;
-$currentPage = 1;
-$countAirports = count($airports);
-$itemsPerPage = 10;
-$totalPages = ceil($countAirports / $itemsPerPage);
-$airportsSliced = array_slice($airports, 0, $itemsPerPage);
-
 
 // Filtering
 /**
@@ -20,11 +10,11 @@ $airportsSliced = array_slice($airports, 0, $itemsPerPage);
  * (see Filtering tasks 1 and 2 below)
  */
 
-if (isset($_GET["filter_by_first_letter"])) {
+if (isset($_GET['filter_by_first_letter'])) {
     $airports = array_filter($airports, "filterByFirstLetter");
 }
 
-if (isset($_GET["filter_by_state"])) {
+if (isset($_GET['filter_by_state'])) {
     $airports = array_filter($airports, "filterByState");
 }
 
@@ -34,12 +24,11 @@ if (isset($_GET["filter_by_state"])) {
  * and apply sorting
  * (see Sorting task below)
  */
-
-if (isset($_GET["sort"])) {
-    $sort = $_GET['sort'];
-    if (!empty($sort)) {
-        usort($airports, function ($a, $b) {
-            return $a['state'] > $b['state'];
+if (isset($_GET['sort'])) {
+    $sortBy = $_GET['sort'];
+    if (!empty($sortBy)) {
+        usort($airports, function ($a, $b) use ($sortBy) {
+            return $a[$sortBy] <=> $b[$sortBy];
         });
     }
 }
@@ -50,12 +39,10 @@ if (isset($_GET["sort"])) {
  * and apply pagination logic
  * (see Pagination task below)
  */
-if (isset($_GET["page"])) {
-    $currentPage = !empty($_GET['page']) ? (int)$_GET['page'] : 0;
-    $offset = ($currentPage - 1) * $itemsPerPage;
-    if ($offset < 0) $offset = 0;
-    $airportsSliced = array_slice($airports, $offset, $itemsPerPage);
-}
+$itemsPerPage = 5;
+$totalPages = ceil(count($airports) / $itemsPerPage);
+$currentPage = !empty($_GET['page']) ? $_GET['page'] : 1;
+$airports = Pagination($airports, $itemsPerPage, $currentPage);
 
 ?>
 <!doctype html>
@@ -88,11 +75,10 @@ if (isset($_GET["page"])) {
         Filter by first letter:
 
         <?php foreach (getUniqueFirstLetters(require './airports.php') as $letter): ?>
-            <a href="<?= buildUrl(['filter_by_first_letter' => $letter]) ?>"><?= $letter ?></a>
-
+            <a href="<?= buildUrl(['filter_by_first_letter' => $letter, 'page' => 1]); ?>"><?= $letter ?></a>
         <?php endforeach; ?>
 
-        <a href="/" class="float-right">Reset all filters</a>
+        <a href="./" class="float-right">Reset all filters</a>
     </div>
 
     <!--
@@ -127,11 +113,12 @@ if (isset($_GET["page"])) {
              - when you apply filter_by_state, than filter_by_first_letter (see Filtering task #1) is not reset
                i.e. if you have filter_by_first_letter set you can additionally use filter_by_state
         -->
-        <?php foreach ($airportsSliced as $airport): ?>
+        <?php foreach ($airports as $airport): ?>
             <tr>
                 <td><?= $airport['name'] ?></td>
                 <td><?= $airport['code'] ?></td>
-                <td><a href="<?= buildUrl(['filter_by_state' => $airport['state']]) ?>"><?= $airport['state'] ?></a>
+                <td>
+                    <a href="<?= buildUrl(['filter_by_state' => $airport['state'], 'page' => 1]) ?>"><?= $airport['state'] ?></a>
                 </td>
                 <td><?= $airport['city'] ?></td>
                 <td><?= $airport['address'] ?></td>
@@ -150,9 +137,10 @@ if (isset($_GET["page"])) {
          - use page key (i.e. /?page=1)
          - when you apply pagination - all filters and sorting are not reset
     -->
+
     <nav aria-label="Navigation">
-        <ul class="pagination pagination-sm justify-content-center">
-            <?php for ($page = 1; $page <= ceil($countAirports / $itemsPerPage); $page++): ?>
+        <ul class="pagination pagination-sm justify-content-center flex-wrap">
+            <?php for ($page = 1; $page <= $totalPages; $page++): ?>
                 <?php if ($page == $currentPage): ?>
                     <li class="page-item active">
                         <span class="page-link"><?= $currentPage ?></span>
